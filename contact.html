@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Contact — Shiva Botta</title>
+<meta name="description" content="Get in touch with Shiva Botta.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Sora:wght@200;300;400;500;600&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="core.css">
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+<div class="spot" aria-hidden="true"></div>
+<div class="cur" aria-hidden="true"></div><div class="cur-r" aria-hidden="true"></div>
+
+<nav class="nav">
+  <a class="brand" href="index.html" aria-label="Shiva Botta — home">
+    <span class="mark">SB</span><span class="wm">Shiva Botta</span>
+  </a>
+  <button class="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+  <ul>
+    <li><a href="index.html"><span class="n">01</span>Home</a></li>
+    <li><a href="about.html"><span class="n">02</span>About</a></li>
+    <li><a href="projects.html"><span class="n">03</span>Projects</a></li>
+    <li><a href="certifications.html"><span class="n">04</span>Certifications</a></li>
+    <li><a href="contact.html" aria-current="page"><span class="n">05</span>Contact</a></li>
+  </ul>
+</nav>
+
+<main>
+  <header class="subhero">
+    <p class="kick"><span class="bar"></span>05 — Contact <span class="frag">[?]</span></p>
+    <h1>Let's<br><em data-scramble>talk.</em></h1>
+    <p class="lede">I don't list an email or phone number on this page — a short form works better for both of us. Answer a few quick questions below and I'll get back to you personally.</p>
+  </header>
+
+  <section class="cwrap">
+    <div class="cons">
+      <div class="cons-t">
+        <span class="pips"><i class="on"></i><i></i><i></i><i></i><i></i></span>
+        <span id="step">STEP 1 OF 5</span>
+      </div>
+      <div class="cons-b">
+        <div id="log"></div>
+        <div class="ask" id="ask"></div>
+        <div class="acts" id="acts"></div>
+        <p class="stat-l" id="msg" role="status" aria-live="polite"></p>
+      </div>
+    </div>
+    <p class="cnote">
+      When you submit this, I also receive some basic context: the approximate city your message
+      came from (from your IP address), your device and browser, and how you found this site.
+      It helps me understand who's finding my work and how. Nothing beyond your message is stored,
+      and I reply personally rather than through any automated system.
+    </p>
+  </section>
+
+  <form id="tx" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" hidden>
+    <input name="name" id="f_name"><input name="email" id="f_email">
+    <input name="visitor_type" id="f_type"><input name="found_via" id="f_src">
+    <textarea name="message" id="f_msg"></textarea>
+    <input name="device_type" id="t_dev"><input name="browser_os" id="t_ua">
+    <input name="screen" id="t_scr"><input name="timezone" id="t_tz">
+    <input name="language" id="t_lang"><input name="referrer" id="t_ref">
+    <input name="ip_address" id="t_ip"><input name="approx_location" id="t_loc">
+    <input name="found_hidden_note" id="t_key" value="no">
+  </form>
+</main>
+
+<footer class="foot">
+  <span>© <span class="yr"></span> Shiva Botta</span>
+  <span><a href="index.html">← home</a></span>
+</footer>
+
+<div class="dec" role="dialog" aria-modal="true" aria-label="A note">
+  <div class="w">
+    <div class="h"><span>A short note</span><span class="x">[ close ]</span></div>
+    <div id="decBody"></div>
+  </div>
+</div>
+
+<script src="core.js"></script>
+<script>
+/* ================= CONTACT STEP FORM ================= */
+(function(){
+"use strict";
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const log=document.getElementById('log'), ask=document.getElementById('ask'),
+      acts=document.getElementById('acts'), msg=document.getElementById('msg'),
+      step=document.getElementById('step'), pips=[...document.querySelectorAll('.pips i')];
+
+const STEPS=[
+ {k:'name', q:'What should I call you?', t:'text', ph:'your name', f:'f_name'},
+ {k:'email',q:'Best way to reach you back?',  t:'email',ph:'your email', f:'f_email',
+  val:v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)||'that doesn\u2019t look like a valid email — mind checking it?'},
+ {k:'type', q:'Which of these describes you best?', t:'opts', f:'f_type',
+  o:['Recruiter / hiring team','Engineer / peer','Someone with a project idea','Just browsing']},
+ {k:'src',  q:'How did you find this site?', t:'opts', f:'f_src',
+  o:['LinkedIn','A resume / application','GitHub','Hugging Face','Word of mouth','Search','Somewhere else']},
+ {k:'msg',  q:'What would you like to say?', t:'area', ph:'go ahead…', f:'f_msg'}
+];
+let i=0; const D={};
+
+function bar(){
+  step.textContent = i<STEPS.length ? 'STEP '+(i+1)+' OF 5' : 'READY TO SEND';
+  pips.forEach((p,x)=>p.classList.toggle('on',x<=Math.min(i,4)));
+}
+function logLine(s,v){
+  const d=document.createElement('div');d.className='ln';
+  d.innerHTML='<span class="q"></span> <span class="a"></span>';
+  d.querySelector('.q').textContent=s.q; d.querySelector('.a').textContent=v;
+  log.appendChild(d);
+}
+function mk(label,cls,fn){
+  const b=document.createElement('button');b.type='button';b.className='btn '+cls;
+  b.innerHTML='<span>'+label+'</span>';b.addEventListener('click',fn);return b;
+}
+function back(){
+  return mk('← back','',()=>{
+    if(i===0)return; i--;
+    const l=log.querySelectorAll('.ln'); if(l.length)l[l.length-1].remove();
+    render();
+  });
+}
+function commit(s,v){
+  logLine(s,v);
+  if(s.k==='msg'&&/\bbuild\b/i.test(v)){const f=document.getElementById('t_key');if(f)f.value='yes';}
+  D[s.k]=v; i++; render();
+}
+function render(){
+  ask.innerHTML='';acts.innerHTML='';msg.textContent='';bar();
+  if(i>=STEPS.length)return review();
+  const s=STEPS[i];
+  const q=document.createElement('span');q.className='q';
+  q.innerHTML=s.q+' <span class="cr"></span>';ask.appendChild(q);
+
+  if(s.t==='opts'){
+    const w=document.createElement('div');w.className='opts';
+    s.o.forEach(o=>{
+      const b=document.createElement('button');b.type='button';b.className='opt';b.textContent=o;
+      b.addEventListener('click',()=>commit(s,o));w.appendChild(b);
+    });
+    ask.appendChild(w);
+    if(i>0)acts.appendChild(back());
+  } else if(s.t==='area'){
+    const ta=document.createElement('textarea');ta.className='fin';ta.placeholder=s.ph;ta.rows=4;
+    ask.appendChild(ta);
+    acts.appendChild(mk('Send','solid',()=>{
+      const v=ta.value.trim();
+      if(!v){msg.textContent='> say a little something first';return;}
+      commit(s,v);
+    }));
+    acts.appendChild(back());
+    if(!RM)setTimeout(()=>ta.focus(),50);
+  } else {
+    const inp=document.createElement('input');inp.className='fin';
+    inp.type=s.t==='email'?'email':'text';inp.placeholder=s.ph;
+    inp.autocomplete=s.k==='name'?'name':(s.k==='email'?'email':'off');
+    ask.appendChild(inp);
+    const go=()=>{
+      const v=inp.value.trim();
+      if(!v){msg.textContent='> this one needs an answer';return;}
+      if(s.val){const r=s.val(v);if(r!==true){msg.textContent='> '+r;return;}}
+      commit(s,v);
+    };
+    inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();go();}});
+    acts.appendChild(mk('Continue →','solid',go));
+    if(i>0)acts.appendChild(back());
+    if(!RM)setTimeout(()=>inp.focus(),50);
+  }
+}
+function review(){
+  const q=document.createElement('span');q.className='q';
+  q.textContent='Ready to send this?';
+  ask.appendChild(q);
+  acts.appendChild(mk('Send message','solid',fire));
+  acts.appendChild(mk('← edit','',()=>{
+    i=STEPS.length-1;const l=log.querySelectorAll('.ln');if(l.length)l[l.length-1].remove();render();
+  }));
+}
+function device(){
+  const u=navigator.userAgent;
+  if(/iPad|Tablet|PlayBook|Silk/i.test(u)||(navigator.maxTouchPoints>1&&/Macintosh/.test(u)))return 'Tablet';
+  if(/Mobi|Android|iPhone/i.test(u))return 'Mobile';
+  return 'Desktop';
+}
+function ua(){
+  const u=navigator.userAgent;let os='Unknown OS';
+  if(/Windows NT/.test(u))os='Windows';else if(/Android/.test(u))os='Android';
+  else if(/iPhone|iPad|iPod/.test(u))os='iOS';else if(/Mac OS X/.test(u))os='macOS';
+  else if(/Linux/.test(u))os='Linux';
+  let b='Unknown browser';
+  if(/Edg\//.test(u))b='Edge';else if(/OPR\//.test(u))b='Opera';else if(/Chrome\//.test(u))b='Chrome';
+  else if(/Safari\//.test(u))b='Safari';else if(/Firefox\//.test(u))b='Firefox';
+  return b+' on '+os;
+}
+async function fire(){
+  acts.querySelectorAll('button').forEach(b=>b.disabled=true);
+  msg.textContent='> sending…';
+  document.getElementById('f_name').value=D.name||'';
+  document.getElementById('f_email').value=D.email||'';
+  document.getElementById('f_type').value=D.type||'';
+  document.getElementById('f_src').value=D.src||'';
+  document.getElementById('f_msg').value=D.msg||'';
+  document.getElementById('t_dev').value=device();
+  document.getElementById('t_ua').value=ua();
+  document.getElementById('t_scr').value=screen.width+'×'+screen.height;
+  document.getElementById('t_tz').value=Intl.DateTimeFormat().resolvedOptions().timeZone||'';
+  document.getElementById('t_lang').value=navigator.language||'';
+  document.getElementById('t_ref').value=document.referrer||'direct / none';
+  try{
+    const r=await fetch('https://ipapi.co/json/',{signal:AbortSignal.timeout(4000)});
+    if(r.ok){const g=await r.json();
+      document.getElementById('t_ip').value=g.ip||'';
+      document.getElementById('t_loc').value=[g.city,g.region,g.country_name].filter(Boolean).join(', ');
+    }
+  }catch(_){}
+  const form=document.getElementById('tx');
+  try{
+    const res=await fetch(form.action,{method:'POST',body:new FormData(form),headers:{'Accept':'application/json'}});
+    if(res.ok)return done();
+    msg.textContent='> that didn\u2019t go through — try again in a moment';
+  }catch(_){msg.textContent='> connection hiccup — try again in a moment';}
+  acts.querySelectorAll('button').forEach(b=>b.disabled=false);
+}
+function done(){
+  ask.innerHTML='';acts.innerHTML='';
+  step.textContent='SENT';pips.forEach(p=>p.classList.add('on'));
+  const q=document.createElement('span');q.className='q';
+  q.textContent='Got it — thank you.';
+  ask.appendChild(q);
+  const p=document.createElement('p');
+  p.style.cssText="font-family:'Sora',sans-serif;color:var(--ink-2);margin-top:.9rem;max-width:52ch;font-size:.98rem";
+  p.textContent="Your message is on its way. If it's a good fit, I'll follow up at the email you gave me.";
+  ask.appendChild(p);
+  acts.appendChild(mk('← back to home','',()=>location.href='index.html'));
+}
+render();
+})();
+</script>
+</body>
+</html>

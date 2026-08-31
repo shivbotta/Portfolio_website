@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Projects — Shiva Botta</title>
+<meta name="description" content="Projects by Shiva Botta — KwikJobs, penetration-testing labs, a home detection lab, Cisco networks, and published machine-learning models.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Sora:wght@200;300;400;500;600&family=JetBrains+Mono:wght@300;400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="core.css">
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+<div class="spot" aria-hidden="true"></div>
+<div class="cur" aria-hidden="true"></div><div class="cur-r" aria-hidden="true"></div>
+
+<nav class="nav">
+  <a class="brand" href="index.html" aria-label="Shiva Botta — home">
+    <span class="mark">SB</span><span class="wm">Shiva Botta</span>
+  </a>
+  <button class="burger" aria-label="Menu"><span></span><span></span><span></span></button>
+  <ul>
+    <li><a href="index.html"><span class="n">01</span>Home</a></li>
+    <li><a href="about.html"><span class="n">02</span>About</a></li>
+    <li><a href="projects.html" aria-current="page"><span class="n">03</span>Projects</a></li>
+    <li><a href="certifications.html"><span class="n">04</span>Certifications</a></li>
+    <li><a href="contact.html"><span class="n">05</span>Contact</a></li>
+  </ul>
+</nav>
+
+<main>
+  <header class="subhero">
+    <p class="kick"><span class="bar"></span>03 — Projects <span class="frag">[L]</span></p>
+    <h1>Built, tested,<br><em data-scramble>and documented.</em></h1>
+    <p class="lede">Everything below is real — shipped, or run in a controlled lab — and I can walk through any of it in detail. Next: <a href="certifications.html">what I'm certifying in</a>.</p>
+  </header>
+
+  <section class="works">
+
+    <article class="work rv" data-i>
+      <div class="idx"><span class="d"></span>001</div>
+      <div class="bd">
+        <div class="tags">
+          <span class="tg v">Web &amp; mobile</span><span class="tg c">Shipped</span>
+          <span class="when">SEP – DEC 2025 · MILWAUKEE ↔ CHICAGO</span>
+        </div>
+        <p class="stat">10,000+ <s>users · 100+ local businesses</s></p>
+        <h3>KwikJobs</h3>
+        <p>A location-based job-matching platform for web and mobile, built with a small team and taken from an empty repository to a live product used across two cities. I worked on the authentication flows, role-based access rules, and production monitoring, and helped carry it through deployment and early growth — including keeping it stable once real people depended on it.</p>
+        <p class="st"><b>Stack</b> — React Native · Supabase · Firebase · Sentry</p>
+      </div>
+    </article>
+
+    <article class="work brk rv" data-i>
+      <div class="idx"><span class="d"></span>002</div>
+      <div class="bd">
+        <div class="tags">
+          <span class="tg g">Security</span>
+          <span class="when">CONTROLLED LAB</span>
+        </div>
+        <h3>Penetration testing &amp; vulnerability assessment</h3>
+        <p>Controlled attacks against deliberately vulnerable targets: enumeration with Nmap, exploitation with Metasploit against Metasploitable, and write-ups that turn every finding into a remediation step. This is where I learned that breaking something is only useful if you can also explain how to fix it.</p>
+        <p class="st"><b>Tools</b> — Nmap · Metasploit · Metasploitable 2</p>
+      </div>
+    </article>
+
+    <article class="work rv" data-i>
+      <div class="idx"><span class="d"></span>003</div>
+      <div class="bd">
+        <div class="tags">
+          <span class="tg c">Security</span>
+          <span class="when">HOME LAB · ONGOING</span>
+        </div>
+        <h3>Detection lab</h3>
+        <p>A self-built SIEM environment at home: log ingestion, custom detection rules, and documented investigations. I built it to understand the defensive side as well as I understood the offensive side — watching for a problem is a different skill than finding one.</p>
+        <p class="st"><b>Tools</b> — Wazuh · Linux · Windows event logs</p>
+      </div>
+    </article>
+
+    <article class="work rv" data-i>
+      <div class="idx"><span class="d"></span>004</div>
+      <div class="bd">
+        <div class="tags">
+          <span class="tg v">Networking</span>
+          <span class="when">CISCO IOS</span>
+        </div>
+        <h3>Routing, switching &amp; segmentation</h3>
+        <p>Routers, switches, and VLANs configured in Cisco IOS with ACLs applied and traffic flow analyzed end to end. This was the class that made networking click for me — the invisible plumbing nobody thinks about until it breaks.</p>
+        <p class="st"><b>Tools</b> — Cisco IOS · VLANs · ACLs · TCP/IP</p>
+      </div>
+    </article>
+
+    <article class="work rv" data-i>
+      <div class="idx"><span class="d"></span>005</div>
+      <div class="bd">
+        <div class="tags">
+          <span class="tg v">Applied AI</span><span class="tg c">App security</span>
+          <span class="when">PUBLISHED</span>
+        </div>
+        <h3>Machine learning &amp; secure data</h3>
+        <p>Fine-tuned BERT and DistilBERT classifiers and built a small GPT from scratch, then published them publicly instead of leaving them in a notebook. Separately: SQL databases designed with role-based access control and hardened authentication, with SQL-injection and access-control flaws mapped and closed.</p>
+        <p class="st"><b>Stack</b> — Python · PyTorch · SQL/MySQL · <a href="https://huggingface.co/shiv9999" target="_blank" rel="noopener">Hugging Face ↗</a></p>
+      </div>
+    </article>
+
+    <p class="kick rv" style="margin-top:3rem;border-top:1px solid var(--line);padding-top:2.2rem">
+      <span class="bar"></span>End of list
+      <a href="certifications.html" style="color:var(--teal);text-decoration:none;margin-left:.8rem">what I'm certifying in →</a>
+    </p>
+  </section>
+</main>
+
+<footer class="foot">
+  <span>© <span class="yr"></span> Shiva Botta</span>
+  <span><a href="index.html">← home</a></span>
+</footer>
+
+<div class="dec" role="dialog" aria-modal="true" aria-label="A note">
+  <div class="w">
+    <div class="h"><span>A short note</span><span class="x">[ close ]</span></div>
+    <div id="decBody"></div>
+  </div>
+</div>
+
+<form id="__t" hidden><input id="t_key" value="no"></form>
+<script src="core.js"></script>
+</body>
+</html>
