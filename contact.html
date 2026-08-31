@@ -50,15 +50,9 @@
         <p class="stat-l" id="msg" role="status" aria-live="polite"></p>
       </div>
     </div>
-    <p class="cnote">
-      When you submit this, I also receive some basic context: the approximate city your message
-      came from (from your IP address), your device and browser, and how you found this site.
-      It helps me understand who's finding my work and how. Nothing beyond your message is stored,
-      and I reply personally rather than through any automated system.
-    </p>
   </section>
 
-  <form id="tx" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" hidden>
+  <form id="tx" action="https://formspree.io/f/xkjnojpg" method="POST" hidden>
     <input name="name" id="f_name"><input name="email" id="f_email">
     <input name="visitor_type" id="f_type"><input name="found_via" id="f_src">
     <textarea name="message" id="f_msg"></textarea>
@@ -222,8 +216,18 @@ async function fire(){
   try{
     const res=await fetch(form.action,{method:'POST',body:new FormData(form),headers:{'Accept':'application/json'}});
     if(res.ok)return done();
-    msg.textContent='> that didn\u2019t go through — try again in a moment';
-  }catch(_){msg.textContent='> connection hiccup — try again in a moment';}
+    let reason='';
+    try{
+      const body=await res.json();
+      if(body && body.errors && body.errors.length) reason=body.errors.map(e=>e.message).join('; ');
+    }catch(_){}
+    console.error('Form submission failed', res.status, reason);
+    if(res.status===403){
+      msg.textContent='> this form isn\u2019t active yet — check the inbox you used to create it on Formspree and confirm it, then try again';
+    } else {
+      msg.textContent='> that didn\u2019t go through (error '+res.status+(reason?': '+reason:'')+') — try again in a moment';
+    }
+  }catch(err){console.error('Network error',err);msg.textContent='> connection hiccup — try again in a moment';}
   acts.querySelectorAll('button').forEach(b=>b.disabled=false);
 }
 function done(){
